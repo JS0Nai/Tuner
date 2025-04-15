@@ -16,6 +16,7 @@ build/
 
 # Logs
 *.log
+devlogs/
 
 # Generated output
 blog_finetuning/
@@ -29,3 +30,7 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo
+
+# Project specific files
+build-log.txt
+templates/
