@@ -30,7 +30,7 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 # Base directory for the pipeline
-BASE_DIR = Path("blog_finetuning")
+BASE_DIR = Path("finetuning")
 BASE_DIR.mkdir(exist_ok=True)
 
 # Configure Flask app templates

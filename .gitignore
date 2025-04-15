@@ -19,7 +19,7 @@ build/
 devlogs/
 
 # Generated output
-blog_finetuning/
+finetuning/
 
 # OS specific files
 .DS_Store

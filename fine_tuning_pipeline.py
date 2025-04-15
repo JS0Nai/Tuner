@@ -34,7 +34,7 @@ class FineTuningPipeline:
     
     def __init__(self, base_dir=None, sources=None, source_file=None, source_dir=None):
         # Set base directory for the pipeline
-        self.base_dir = Path(base_dir) if base_dir else Path("blog_finetuning")
+        self.base_dir = Path(base_dir) if base_dir else Path("finetuning")
         self.base_dir.mkdir(exist_ok=True)
         
         # Define directories for each stage
@@ -306,7 +306,7 @@ def main():
     parser = argparse.ArgumentParser(description="Run the complete LLM fine-tuning preparation pipeline")
     
     # Base directory
-    parser.add_argument("--base-dir", default="blog_finetuning", help="Base directory for the pipeline")
+    parser.add_argument("--base-dir", default="finetuning", help="Base directory for the pipeline")
     
     # Source input options
     source_group = parser.add_mutually_exclusive_group(required=True)

@@ -1,10 +1,10 @@
-# Blog Content Preparation System for LLM Fine-Tuning
+# Content Preparation System for LLM Fine-Tuning
 
-This system provides a comprehensive pipeline for preparing, cleaning, and optimizing blog content for fine-tuning language models on your writing style and tone.
+This system provides a comprehensive pipeline for preparing, cleaning, and optimizing content for fine-tuning language models on your writing style and tone.
 
 ## Overview
 
-The system takes your existing blog content from various sources (URLs, files, directories) and processes it through several stages to create high-quality datasets suitable for fine-tuning different language models.
+The system takes your existing content from various sources (URLs, files, directories) and processes it through several stages to create high-quality datasets suitable for fine-tuning different language models.
 
 ### Pipeline Stages
 
@@ -20,6 +20,7 @@ The system takes your existing blog content from various sources (URLs, files, d
 - Markdown files
 - PDF documents
 - Microsoft Word documents (DOCX)
+- Plain text files (TXT)
 
 ### Supported Output Formats
 
@@ -95,7 +96,7 @@ One of the following source options is required:
 
 #### Optional Arguments
 
-- `--base-dir`: Base directory for the pipeline (default: "blog_finetuning")
+- `--base-dir`: Base directory for the pipeline (default: "finetuning")
 - `--val-ratio`, `-v`: Validation set ratio (default: 0.1)
 
 #### Examples
@@ -214,7 +215,7 @@ Use the `final/llama/train.json` and `final/llama/val.json` files with LLaMA fin
 ## Directory Structure
 
 ```txt
-blog_finetuning/
+finetuning/
 ├── raw/            # Raw extracted content
 ├── cleaned/        # Cleaned content
 ├── optimized/      # Optimized content for fine-tuning
