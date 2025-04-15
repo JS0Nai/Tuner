@@ -74,7 +74,7 @@ class ContentExtractor:
             title = soup.title.string if soup.title else "Unknown Title"
             
             # Try to find the main content
-            # This is a simple approach - you might need to adapt based on your blogs' structure
+            # This is a simple approach - you might need to adapt based on your docs' structure
             content_areas = soup.find_all(['article', 'main', 'div'], 
                                         class_=re.compile(r'content|article|post|entry'))
             

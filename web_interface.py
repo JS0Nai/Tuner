@@ -128,7 +128,7 @@ if not (TEMPLATES_DIR / "index.html").exists():
                             <div class="mb-3 source-input" id="directory-input" style="display: none;">
                                 <label for="sourceDir" class="form-label">Directory Path</label>
                                 <input type="text" class="form-control" id="sourceDir" placeholder="/path/to/content">
-                                <div class="form-text">Directory containing your blog content files</div>
+                                <div class="form-text">Directory containing your content files</div>
                             </div>
                             
                             <div class="mb-3">

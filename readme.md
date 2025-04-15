@@ -104,7 +104,7 @@ One of the following source options is required:
 Process a list of URLs:
 
 ```bash
-python fine_tuning_pipeline.py --sources https://example.com/blog/post1 https://example.com/blog/post2
+python fine_tuning_pipeline.py --sources https://example.com/post1 https://example.com/post2
 ```
 
 Process URLs from a file:
@@ -116,7 +116,7 @@ python fine_tuning_pipeline.py --file urls.txt
 Process files from a directory:
 
 ```bash
-python fine_tuning_pipeline.py --dir /path/to/blog/content
+python fine_tuning_pipeline.py --dir /path/to/content
 ```
 
 ## Individual Component Usage

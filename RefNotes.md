@@ -26,10 +26,10 @@ python web_interface.py
 
 ```bash
 # Process URLs
-python fine_tuning_pipeline.py --sources https://example.com/blog/post1 https://example.com/blog/post2
+python fine_tuning_pipeline.py --sources https://example.com/post1 https://example.com/post2
 
 # Process files from a directory
-python fine_tuning_pipeline.py --dir /path/to/blog/content
+python fine_tuning_pipeline.py --dir /path/to/content
 
 # Process a single file
 python fine_tuning_pipeline.py --sources "/path/to/file.md"
