@@ -29,6 +29,14 @@ logging.basicConfig(
 )
 logger = logging.getLogger()
 
+# Base directory for the pipeline
+BASE_DIR = Path("blog_finetuning")
+BASE_DIR.mkdir(exist_ok=True)
+
+# Configure Flask app templates
+TEMPLATES_DIR = Path("templates")
+TEMPLATES_DIR.mkdir(exist_ok=True)
+
 # Create Flask app
 app = Flask(__name__, template_folder=str(TEMPLATES_DIR))
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max upload size
@@ -41,14 +49,6 @@ pipeline_state = {
     "logs": [],
     "last_updated": None
 }
-
-# Base directory for the pipeline
-BASE_DIR = Path("blog_finetuning")
-BASE_DIR.mkdir(exist_ok=True)
-
-# Configure Flask app templates
-TEMPLATES_DIR = Path("templates")
-TEMPLATES_DIR.mkdir(exist_ok=True)
 
 # Check if we need to create the template file
 if not (TEMPLATES_DIR / "index.html").exists():
