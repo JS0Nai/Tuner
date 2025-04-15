@@ -275,3 +275,6 @@ Contributions to improve this system are welcome. Please feel free to submit iss
 ## License
 
 This project is licensed under the MIT License.
+
+<img width="961" alt="image" src="https://github.com/user-attachments/assets/8179c88a-1b56-43e4-b8b9-afdfb1678b39" />
+
