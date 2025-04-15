@@ -239,6 +239,36 @@ class ContentExtractor:
         except Exception as e:
             logger.error(f"Error extracting from DOCX file {file_path}: {e}")
             return None
+            
+    def extract_from_text(self, file_path):
+        """Extract content from a plain text file."""
+        try:
+            logger.info(f"Extracting from text file: {file_path}")
+            
+            with open(file_path, 'r', encoding='utf-8', errors='replace') as f:
+                text_content = f.read()
+            
+            # Use the filename as the title
+            title = Path(file_path).stem
+            
+            # Try to extract title from first line if it looks like a title
+            lines = text_content.splitlines()
+            if lines and len(lines[0].strip()) < 80:  # Reasonable title length
+                title = lines[0].strip()
+                # Remove the title line from content to avoid duplication
+                text_content = '\n'.join(lines[1:])
+            
+            return {
+                "source": str(file_path),
+                "title": title,
+                "date": datetime.now().isoformat(),
+                "content": text_content,
+                "source_type": "text_file"
+            }
+        
+        except Exception as e:
+            logger.error(f"Error extracting from text file {file_path}: {e}")
+            return None
     
     def save_content(self, content_dict):
         """Save extracted content to a JSON file."""
@@ -288,6 +318,8 @@ class ContentExtractor:
                 content_dict = self.extract_from_pdf(source_path)
             elif suffix in ['.docx', '.doc']:
                 content_dict = self.extract_from_docx(source_path)
+            elif suffix in ['.txt', '.text']:
+                content_dict = self.extract_from_text(source_path)
             else:
                 logger.warning(f"Unsupported file format: {suffix}")
                 return False
@@ -344,7 +376,7 @@ def main():
             sources = [line.strip() for line in f if line.strip()]
     elif args.dir:
         dir_path = Path(args.dir)
-        extensions = ['.html', '.htm', '.md', '.markdown', '.pdf', '.docx', '.doc']
+        extensions = ['.html', '.htm', '.md', '.markdown', '.pdf', '.docx', '.doc', '.txt', '.text']
         
         for ext in extensions:
             sources.extend([str(p) for p in dir_path.rglob(f"*{ext}")])
