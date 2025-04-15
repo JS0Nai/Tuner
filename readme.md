@@ -45,6 +45,7 @@ The system takes your existing blog content from various sources (URLs, files, d
 pip install -r requirements.txt
 ```
 
+Continued ...
 3. Download the spaCy English model:
 
 ```bash
@@ -63,7 +64,7 @@ The web interface provides an easy-to-use UI for managing the fine-tuning prepar
 python web_interface.py
 ```
 
-This will start a local web server and open the interface in your default web browser. 
+This will start a local web server and open the interface in your default web browser.
 From there, you can:
 
 - Select your content source (URLs, file, or directory)
@@ -79,7 +80,12 @@ You can also run the pipeline directly from the command line:
 python fine_tuning_pipeline.py [OPTIONS]
 ```
 
-#### Required Arguments:
+Examples:
+  python fine_tuning_pipeline.py --sources file1.txt file2.md
+  python fine_tuning_pipeline.py --file list_of_sources.txt
+  python fine_tuning_pipeline.py --dir /path/to/content_directory
+
+#### Required Arguments
 
 One of the following source options is required:
 
@@ -87,24 +93,27 @@ One of the following source options is required:
 - `--file`, `-f`: File containing sources (one per line)
 - `--dir`, `-d`: Directory to recursively scan for compatible files
 
-#### Optional Arguments:
+#### Optional Arguments
 
 - `--base-dir`: Base directory for the pipeline (default: "blog_finetuning")
 - `--val-ratio`, `-v`: Validation set ratio (default: 0.1)
 
-#### Examples:
+#### Examples
 
 Process a list of URLs:
+
 ```bash
 python fine_tuning_pipeline.py --sources https://example.com/blog/post1 https://example.com/blog/post2
 ```
 
 Process URLs from a file:
+
 ```bash
 python fine_tuning_pipeline.py --file urls.txt
 ```
 
 Process files from a directory:
+
 ```bash
 python fine_tuning_pipeline.py --dir /path/to/blog/content
 ```
@@ -204,7 +213,7 @@ Use the `final/llama/train.json` and `final/llama/val.json` files with LLaMA fin
 
 ## Directory Structure
 
-```
+```txt
 blog_finetuning/
 ├── raw/            # Raw extracted content
 ├── cleaned/        # Cleaned content
@@ -250,6 +259,7 @@ blog_finetuning/
 ### Logs
 
 Log files are created for each component:
+
 - `extraction.log` - Content extraction logs
 - `cleaning.log` - Text cleaning logs
 - `optimization.log` - Content optimization logs
