@@ -30,7 +30,7 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 # Create Flask app
-app = Flask(__name__)
+app = Flask(__name__, template_folder=str(TEMPLATES_DIR))
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max upload size
 
 # Global variables for pipeline state
@@ -46,13 +46,15 @@ pipeline_state = {
 BASE_DIR = Path("blog_finetuning")
 BASE_DIR.mkdir(exist_ok=True)
 
-# Create templates directory
+# Configure Flask app templates
 TEMPLATES_DIR = Path("templates")
 TEMPLATES_DIR.mkdir(exist_ok=True)
 
-# Create HTML template file
-with open(TEMPLATES_DIR / "index.html", "w") as f:
-    f.write("""<!DOCTYPE html>
+# Check if we need to create the template file
+if not (TEMPLATES_DIR / "index.html").exists():
+    logger.info("Creating index.html template")
+    with open(TEMPLATES_DIR / "index.html", "w") as f:
+        f.write("""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -106,9 +108,9 @@ with open(TEMPLATES_DIR / "index.html", "w") as f:
                                 <label for="sourceType" class="form-label">Source Type</label>
                                 <select class="form-select" id="sourceType" required>
                                     <option value="">Select source type...</option>
-                                    <option value="urls">URLs</option>
-                                    <option value="file">Source File</option>
-                                    <option value="directory">Directory</option>
+                                    <option value="urls">List of URLs</option>
+                                    <option value="file">Upload Document</option>
+                                    <option value="directory">Scan Directory</option>
                                 </select>
                             </div>
                             
@@ -118,9 +120,9 @@ with open(TEMPLATES_DIR / "index.html", "w") as f:
                             </div>
                             
                             <div class="mb-3 source-input" id="file-input" style="display: none;">
-                                <label for="sourceFile" class="form-label">Source File</label>
+                                <label for="sourceFile" class="form-label">Upload Document</label>
                                 <input type="file" class="form-control" id="sourceFile">
-                                <div class="form-text">A text file with one URL or file path per line</div>
+                                <div class="form-text">Upload a document directly (HTML, Markdown, PDF, DOCX)</div>
                             </div>
                             
                             <div class="mb-3 source-input" id="directory-input" style="display: none;">
@@ -235,7 +237,17 @@ with open(TEMPLATES_DIR / "index.html", "w") as f:
                     document.getElementById('stop-btn').disabled = false;
                     updatePipelineStatus();
                 } else {
+                    // Show detailed error message
+                    console.error('Pipeline start error:', result);
                     alert('Error starting pipeline: ' + result.message);
+                    
+                    // Update logs with the error
+                    const logsContainer = document.getElementById('logs');
+                    const logEntry = document.createElement('div');
+                    logEntry.className = 'log-entry text-danger';
+                    logEntry.textContent = 'Error: ' + result.message;
+                    logsContainer.appendChild(logEntry);
+                    logsContainer.scrollTop = logsContainer.scrollHeight;
                 }
             } catch (error) {
                 alert('Error: ' + error.message);
@@ -395,6 +407,8 @@ with open(TEMPLATES_DIR / "index.html", "w") as f:
     </script>
 </body>
 </html>""")
+else:
+    logger.info("Using existing index.html template")
 
 
 @app.route('/')
@@ -440,23 +454,56 @@ def start_pipeline():
             if file.filename == '':
                 return jsonify({"success": False, "message": "No file selected"})
             
-            # Save uploaded file
-            file_path = BASE_DIR / "sources.txt"
-            file.save(file_path)
+            # Log information about the uploaded file for debugging
+            logger.info(f"Uploaded file: {file.filename}, content_type: {file.content_type}")
             
-            source_args = ["--file", str(file_path)]
+            try:
+                # Save the uploaded file with its original name in a content directory
+                content_dir = BASE_DIR / "content"
+                content_dir.mkdir(exist_ok=True)
+                
+                # Create a safe filename using the original name
+                import re
+                safe_filename = re.sub(r'[^\w\-\.]', '_', file.filename)
+                file_path = content_dir / safe_filename
+                
+                # Save the file
+                file.save(file_path)
+                logger.info(f"File saved to {file_path}")
+                
+                # For documents we should use --sources directly instead of --file
+                source_args = ["--sources", str(file_path)]
+                
+                # Log the approach we're taking
+                logger.info(f"Using direct source approach for document: {file_path}")
+            except Exception as e:
+                logger.error(f"Error saving/processing file: {str(e)}")
+                return jsonify({"success": False, "message": f"Error processing file: {str(e)}"})
             
         elif source_type == 'directory':
             source_dir = request.form.get('source_dir', '').strip()
+            logger.info(f"Directory input: '{source_dir}'")
             
             if not source_dir:
                 return jsonify({"success": False, "message": "No directory provided"})
             
-            source_dir_path = Path(source_dir)
-            if not source_dir_path.exists() or not source_dir_path.is_dir():
-                return jsonify({"success": False, "message": "Directory does not exist"})
-            
-            source_args = ["--dir", str(source_dir_path)]
+            try:
+                source_dir_path = Path(source_dir)
+                logger.info(f"Directory path: {source_dir_path} (absolute: {source_dir_path.absolute()})")
+                
+                if not source_dir_path.exists():
+                    logger.error(f"Directory does not exist: {source_dir_path}")
+                    return jsonify({"success": False, "message": f"Directory does not exist: {source_dir_path}"})
+                if not source_dir_path.is_dir():
+                    logger.error(f"Path is not a directory: {source_dir_path}")
+                    return jsonify({"success": False, "message": f"Path is not a directory: {source_dir_path}"})
+                
+                # List the directory contents for debugging
+                logger.info(f"Directory contents: {[f.name for f in source_dir_path.iterdir()][:10]}")
+                source_args = ["--dir", str(source_dir_path)]
+            except Exception as e:
+                logger.error(f"Error processing directory path: {str(e)}")
+                return jsonify({"success": False, "message": f"Error processing directory: {str(e)}"})
             
         else:
             return jsonify({"success": False, "message": "Invalid source type"})
@@ -467,6 +514,9 @@ def start_pipeline():
             "--base-dir", str(BASE_DIR),
             "--val-ratio", str(val_ratio)
         ] + source_args
+        
+        # Log the full command for debugging
+        logger.info(f"Command to execute: {' '.join(cmd)}")
         
         # Reset pipeline state
         pipeline_state.update({
