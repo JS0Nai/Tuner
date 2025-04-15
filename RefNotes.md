@@ -1,4 +1,4 @@
-# Blog Tuner Project Notes
+# Tuner Project Notes
 
 ## Common Commands
 
@@ -39,16 +39,16 @@ python fine_tuning_pipeline.py --sources "/path/to/file.md"
 
 ```bash
 # Content Extraction
-python content_extractor.py --output blog_finetuning/raw --sources "/path/to/file.md"
+python content_extractor.py --output finetuning/raw --sources "/path/to/file.md"
 
 # Text Cleaning
-python text_cleaner.py --input blog_finetuning/raw --output blog_finetuning/cleaned
+python text_cleaner.py --input finetuning/raw --output finetuning/cleaned
 
 # Content Optimization
-python content_optimizer.py --input blog_finetuning/cleaned --output blog_finetuning/optimized
+python content_optimizer.py --input finetuning/cleaned --output finetuning/optimized
 
 # Dataset Creation
-python dataset_creator.py --input blog_finetuning/optimized --output blog_finetuning/final --val-ratio 0.1
+python dataset_creator.py --input finetuning/optimized --output finetuning/final --val-ratio 0.1
 ```
 
 ## Project Structure
@@ -63,7 +63,7 @@ python dataset_creator.py --input blog_finetuning/optimized --output blog_finetu
 ## Output Structure
 
 ```bash
-blog_finetuning/
+finetuning/
 ├── raw/            # Raw extracted content
 ├── cleaned/        # Cleaned content
 ├── optimized/      # Optimized content for fine-tuning
@@ -96,7 +96,7 @@ blog_finetuning/
 - If running in a virtual environment, make sure to install the package in the environment:
 
   ```bash
-  ./blogtuner/bin/pip install lxml_html_clean
+  ./tuner/bin/pip install lxml_html_clean
   ```
 
   How to ingest this into a fine-tuning model
@@ -104,25 +104,22 @@ blog_finetuning/
   Different LLM providers have specific ways to use these datasets:
 
 1. OpenAI Fine-tuning:
-    - Use the JSONL files in the OpenAI format (found in /blog_finetuning/final/openai/)
+    - Use the JSONL files in the OpenAI format (found in /finetuning/final/openai/)
     - Upload via their API: openai api fine_tunes.create --training_file=train.jsonl --validation_file=validation.jsonl
   --model=gpt-3.5-turbo-0613
     - Or through their web interface in the fine-tuning section
 2. Anthropic Claude Fine-tuning:
-    - Use the files in /blog_finetuning/final/anthropic/
+    - Use the files in /finetuning/final/anthropic/
     - Submit through Anthropic's fine-tuning API or portal (they have a specific process for enterprise customers)
 3. Hugging Face Models:
-    - Use files in /blog_finetuning/final/huggingface/
+    - Use files in /finetuning/final/huggingface/
     - Load with their dataset library: dataset = load_dataset('json', data_files={'train': 'train.json', 'validation': 'validation.json'})
     - Use with a trainer: trainer = Trainer(model=model, args=training_args, train_dataset=tokenized_dataset['train'])
 4. LLaMA/Open Source Models:
-    - Use the LLaMA format files in /blog_finetuning/final/llama/
+    - Use the LLaMA format files in /finetuning/final/llama/
     - With libraries like LLaMA-Factory or other open-source training frameworks
 
-  Using the application for non-blog content
-
-  Yes, you can absolutely use Blog Tuner for content unrelated to blogs! The name is somewhat misleading - the system is actually
-  content-format agnostic. It can work with:
+  Using the application:
 
 1. Any text-based content:
     - FAQs (as you've just demonstrated)
@@ -139,8 +136,7 @@ blog_finetuning/
     - PDF (.pdf)
     - Word documents (.docx)
 
-  The system doesn't make strong assumptions about the content being "blog-like" - it's designed to extract, clean, and segment any
-  text-based content.
+  The system is designed to extract, clean, and segment any text-based content.
 
   How the code could be modified (hypothetically)
 
@@ -161,7 +157,7 @@ blog_finetuning/
 
   The beauty of the system is its modular design - you could extend it for specific use cases without breaking the core functionality.
 
-  Practical use cases beyond blogs
+  Practical use cases
 
   Some interesting applications you could use this for right now:
 
