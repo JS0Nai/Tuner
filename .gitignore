@@ -1,0 +1,31 @@
+# Python virtual environment
+blogtuner/
+venv/
+env/
+.env/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Logs
+*.log
+
+# Generated output
+blog_finetuning/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
