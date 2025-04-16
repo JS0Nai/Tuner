@@ -45,9 +45,13 @@ except OSError:
 class ContentOptimizer:
     """Optimizes content for LLM fine-tuning."""
     
-    def __init__(self, input_dir="cleaned", output_dir="optimized"):
+    def __init__(self, input_dir="cleaned", output_dir="optimized", instruction="Continue writing in the style of the author:"):
+        """
+        instruction: the prompt or instruction to use for each training example.
+        """
         self.input_dir = Path(input_dir)
         self.output_dir = Path(output_dir)
+        self.instruction = instruction
         self.output_dir.mkdir(parents=True, exist_ok=True)
         
         # Parameters for text segmentation
@@ -239,13 +243,15 @@ class ContentOptimizer:
             
             # Add formatting suitable for different LLM systems
             # For a generic prompt-response format:
-            example["prompt"] = "Continue writing in the style of the author:"
+            example["prompt"] = self.instruction
             example["completion"] = segment
             
-            # For a Chat-based format (e.g., ChatGPT fine-tuning)
+            # For a Chat-based format
+            inst_clean = self.instruction.rstrip(":").strip()
+            sys_msg = f"You are an assistant that {inst_clean.lower()}"
             example["chat_format"] = [
-                {"role": "system", "content": "You are an assistant that writes in the style of the author."},
-                {"role": "user", "content": "Write in the author's distinctive style."},
+                {"role": "system",    "content": sys_msg},
+                {"role": "user",      "content": self.instruction},
                 {"role": "assistant", "content": segment}
             ]
             
@@ -348,6 +354,7 @@ def main():
     parser = argparse.ArgumentParser(description="Optimize content for LLM fine-tuning")
     parser.add_argument("--input", "-i", default="cleaned", help="Input directory containing cleaned content")
     parser.add_argument("--output", "-o", default="optimized", help="Output directory for optimized content")
+    parser.add_argument("--instruction", "-t", default="Continue writing in the style of the author:", help="Instruction/prompt for each training example")
     parser.add_argument("--workers", "-w", type=int, default=4, help="Number of parallel workers")
     parser.add_argument("--min-segment", type=int, default=200, help="Minimum segment length")
     parser.add_argument("--max-segment", type=int, default=2000, help="Maximum segment length")
@@ -355,7 +362,7 @@ def main():
     
     args = parser.parse_args()
     
-    optimizer = ContentOptimizer(input_dir=args.input, output_dir=args.output)
+    optimizer = ContentOptimizer(input_dir=args.input, output_dir=args.output, instruction=args.instruction)
     optimizer.min_segment_len = args.min_segment
     optimizer.max_segment_len = args.max_segment
     optimizer.overlap_size = args.overlap

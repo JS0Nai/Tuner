@@ -32,19 +32,27 @@ logger = logging.getLogger()
 class FineTuningPipeline:
     """Orchestrates the complete fine-tuning preparation pipeline."""
     
-    def __init__(self, base_dir=None, sources=None, source_file=None, source_dir=None):
+    def __init__(self, base_dir=None, sources=None, source_file=None, source_dir=None,
+                 instruction="Continue writing in the style of the author:",
+                 model="gpt-3.5-turbo"):
         # Set base directory for the pipeline
         self.base_dir = Path(base_dir) if base_dir else Path("finetuning")
         self.base_dir.mkdir(exist_ok=True)
+        # Instruction/prompt to pass into optimizer, extractor, and creator
+        self.instruction = instruction
+        # LLM model for command extraction
+        self.model = model
+        # Directories for each stage
         
         # Define directories for each stage
         self.raw_dir = self.base_dir / "raw"
         self.cleaned_dir = self.base_dir / "cleaned"
         self.optimized_dir = self.base_dir / "optimized"
+        self.refined_dir = self.base_dir / "refined"
         self.final_dir = self.base_dir / "final"
         
         # Ensure all directories exist
-        for directory in [self.raw_dir, self.cleaned_dir, self.optimized_dir, self.final_dir]:
+        for directory in [self.raw_dir, self.cleaned_dir, self.optimized_dir, self.refined_dir, self.final_dir]:
             directory.mkdir(exist_ok=True)
         
         # Store source arguments
@@ -171,7 +179,8 @@ class FineTuningPipeline:
         cmd = [
             sys.executable, "content_optimizer.py",
             "--input", str(self.cleaned_dir),
-            "--output", str(self.optimized_dir)
+            "--output", str(self.optimized_dir),
+            "--instruction", self.instruction
         ]
         
         # Run optimization script
@@ -196,16 +205,44 @@ class FineTuningPipeline:
             logger.error(f"Content optimization failed: {e}")
             return False
     
+    def run_command_extraction(self):
+        """Run the AI-driven command extraction/refinement stage."""
+        logger.info("Stage 3.5: Command extraction/refinement")
+        stage_start = time.time()
+        cmd = [
+            sys.executable, "command_extractor.py",
+            "--input", str(self.optimized_dir),
+            "--output", str(self.refined_dir),
+            "--instruction", self.instruction,
+            "--model", self.model
+        ]
+        try:
+            logger.info(f"Running command: {' '.join(cmd)}")
+            subprocess.run(cmd, check=True)
+            files = list(self.refined_dir.glob("*.json"))
+            duration = time.time() - stage_start
+            self.metrics["stages"]["refinement"] = {
+                "files_generated": len(files),
+                "duration_seconds": duration
+            }
+            return True
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Command extraction failed: {e}")
+            return False
+    
     def run_dataset_creation(self, val_ratio=0.1):
         """Run the dataset creation stage."""
         logger.info("Stage 4: Final Dataset Creation")
         stage_start = time.time()
         
+        # Use refined content if available
+        input_dir = self.refined_dir if any(self.refined_dir.glob("*.json")) else self.optimized_dir
         cmd = [
             sys.executable, "dataset_creator.py",
-            "--input", str(self.optimized_dir),
+            "--input", str(input_dir),
             "--output", str(self.final_dir),
-            "--val-ratio", str(val_ratio)
+            "--val-ratio", str(val_ratio),
+            "--instruction", self.instruction
         ]
         
         # Run dataset creation script
@@ -289,8 +326,12 @@ class FineTuningPipeline:
         if not self.run_content_optimization():
             logger.error("Content optimization stage failed. Aborting pipeline.")
             return False
+        # Stage 3.5: AI-driven command extraction/refinement
+        if not self.run_command_extraction():
+            logger.error("Command extraction stage failed. Aborting pipeline.")
+            return False
         
-        # Stage 4: Dataset Creation
+        # Stage 4: Final Dataset Creation
         if not self.run_dataset_creation(val_ratio):
             logger.error("Dataset creation stage failed. Aborting pipeline.")
             return False
@@ -316,6 +357,10 @@ def main():
     
     # Validation ratio
     parser.add_argument("--val-ratio", "-v", type=float, default=0.1, help="Validation set ratio")
+    # Instruction/prompt for command extraction
+    parser.add_argument("--instruction", "-t", default="Continue writing in the style of the author:", help="Instruction for command extraction and refinement")
+    # LLM model for API calls
+    parser.add_argument("--model", "-m", default="gpt-3.5-turbo", help="OpenAI model to use for command extraction")
     
     args = parser.parse_args()
     
@@ -323,7 +368,9 @@ def main():
         base_dir=args.base_dir,
         sources=args.sources,
         source_file=args.file,
-        source_dir=args.dir
+        source_dir=args.dir,
+        instruction=args.instruction,
+        model=args.model
     )
     
     success = pipeline.run_pipeline(val_ratio=args.val_ratio)

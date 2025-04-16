@@ -34,3 +34,12 @@ Thumbs.db
 # Project specific files
 build-log.txt
 templates/
+# Local artifacts
+codex-chat.txt
+codex-help.txt
+
+# Experimental scripts
+command_extractor.py
+
+# Tuning directory
+tunerr/

@@ -30,9 +30,10 @@ logger = logging.getLogger()
 class DatasetCreator:
     """Creates fine-tuning datasets in various formats."""
     
-    def __init__(self, input_dir="optimized", output_dir="final"):
+    def __init__(self, input_dir="optimized", output_dir="final", instruction="Continue writing in the style of the author:"):
         self.input_dir = Path(input_dir)
         self.output_dir = Path(output_dir)
+        self.instruction = instruction
         self.output_dir.mkdir(parents=True, exist_ok=True)
         
         # Create subdirectories for different formats
@@ -256,9 +257,12 @@ class DatasetCreator:
             if "chat_format" in example:
                 messages = example["chat_format"]
             else:
+                # Use dynamic instruction for system and user messages
+                inst_clean = self.instruction.rstrip(":").strip()
+                sys_msg = f"You are an assistant that {inst_clean.lower()}"
                 messages = [
-                    {"role": "system", "content": "You are an assistant that writes in the distinctive style of the author."},
-                    {"role": "user", "content": example["prompt"]},
+                    {"role": "system",    "content": sys_msg},
+                    {"role": "user",      "content": self.instruction},
                     {"role": "assistant", "content": example["completion"]}
                 ]
             
@@ -411,8 +415,9 @@ trainer.train()
         # Function to convert to Llama format
         def format_example(example):
             # LLaMa-style format (similar to Alpaca dataset)
+            inst_text = self.instruction.rstrip(":").strip()
             return {
-                "instruction": "Continue writing in the style of the author",
+                "instruction": inst_text,
                 "input": example["prompt"],
                 "output": example["completion"]
             }
@@ -496,10 +501,11 @@ def main():
     parser.add_argument("--input", "-i", default="optimized", help="Input directory containing optimized content")
     parser.add_argument("--output", "-o", default="final", help="Output directory for final datasets")
     parser.add_argument("--val-ratio", "-v", type=float, default=0.1, help="Validation set ratio")
+    parser.add_argument("--instruction", "-t", default="Continue writing in the style of the author:", help="Instruction/prompt for each example")
     
     args = parser.parse_args()
     
-    creator = DatasetCreator(input_dir=args.input, output_dir=args.output)
+    creator = DatasetCreator(input_dir=args.input, output_dir=args.output, instruction=args.instruction)
     creator.create_all_formats(val_ratio=args.val_ratio)
 
 
