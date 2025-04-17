@@ -11,7 +11,8 @@ The system takes your existing content from various sources (URLs, files, direct
 1. **Content Extraction**: Extracts text content from various sources (HTML, Markdown, PDF, DOCX).
 2. **Text Cleaning**: Cleans and preprocesses the extracted content to improve quality.
 3. **Content Optimization**: Segments and optimizes the cleaned content for fine-tuning.
-4. **Dataset Creation**: Creates fine-tuning datasets in various formats compatible with different training frameworks.
+4. **AI-driven Command Extraction/Refinement**: Uses an AI model (e.g., OpenAI API) to extract and refine prompt–completion structures from optimized content.
+5. **Dataset Creation**: Creates fine-tuning datasets in various formats compatible with different training frameworks.
 
 ### Supported Input Formats
 
@@ -98,6 +99,8 @@ One of the following source options is required:
 
 - `--base-dir`: Base directory for the pipeline (default: "finetuning")
 - `--val-ratio`, `-v`: Validation set ratio (default: 0.1)
+- `--instruction`, `-t`: Instruction or prompt for command extraction/refinement (default: "Continue writing in the style of the author:")
+- `--model`, `-m`: OpenAI model to use for AI-driven command extraction (default: "gpt-3.5-turbo")
 
 #### Examples
 
@@ -141,10 +144,19 @@ python text_cleaner.py --input raw --output cleaned
 python content_optimizer.py --input cleaned --output optimized
 ```
 
-### 4. Dataset Creation
+### 4. AI-driven Command Extraction/Refinement
 
 ```bash
-python dataset_creator.py --input optimized --output final
+python command_extractor.py --input optimized --output refined \
+  --instruction "Continue writing in the style of the author:" \
+  --model gpt-3.5-turbo
+```
+
+### 5. Dataset Creation
+
+```bash
+python dataset_creator.py --input refined --output final \
+  --val-ratio 0.1 --instruction "Continue writing in the style of the author:"
 ```
 
 ## Fine-Tuning with the Generated Datasets
@@ -219,13 +231,14 @@ finetuning/
 ├── raw/            # Raw extracted content
 ├── cleaned/        # Cleaned content
 ├── optimized/      # Optimized content for fine-tuning
+├── refined/        # AI-driven command extraction/refinement output
 └── final/          # Final datasets in various formats
     ├── openai/     # OpenAI format
     ├── anthropic/  # Anthropic Claude format
     ├── huggingface/ # Hugging Face format
     ├── llama/      # LLaMA/Alpaca format
     └── jsonl/      # Raw JSONL format
-```
+``` 
 
 ## Advanced Configuration
 
