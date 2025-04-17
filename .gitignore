@@ -34,6 +34,7 @@ Thumbs.db
 # Project specific files
 build-log.txt
 templates/
+REFNOTES.md
 # Local artifacts
 codex-chat.txt
 codex-help.txt
