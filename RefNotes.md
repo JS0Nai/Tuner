@@ -169,3 +169,127 @@ finetuning/
 
   The system handles the heavy lifting of converting raw text into properly formatted training data, which is one of the more tedious parts
   of fine-tuning.
+
+## Long Document Processing
+
+'Tuner' to process very long chat history documents so that the data is cleaned and properly optimized/extracted/refined
+etc.?
+
+## codex
+
+You can absolutely point Tuner at a folder full of raw chat‐transcript files and have it do the whole shebang—extract, clean,
+    optimize, run the LLM‐driven “command extractor” stage, and spit out a ready‑to‑train dataset. Here’s a quick “how‐to”:
+
+  1. Prep your chat logs
+           • If they’re JSON already (e.g. `{sender, timestamp, text}`), write a tiny converter that emits Tuner’s “raw” JSON format:
+
+      import json, uuid
+               raw = {
+                 "source": "chat_room_xyz",
+                 "title": "April 2025 Stand‑up",
+                 "date": "2025-04-15T10:00:00",
+                 "content": "\n\n".join(f"{m['sender']}: {m['text']}" for m in messages)
+               }
+               with open("chat1.json","w") as f: json.dump(raw, f)
+
+        and drop those `.json` files into a folder (say `my_chats_raw/`).
+           • If it’s plain `.txt`, you can skip extraction and just put them in `my_chats_raw/` (Tuner’s extractor will read `.txt` as plain content).
+
+  2. Run the full pipeline
+
+        python fine_tuning_pipeline.py \
+                 --dir my_chats_raw \
+                 --base-dir finetuning_chats \
+                 --instruction "Summarize this conversation thread:" \
+                 --model gpt-4o \
+                 --val-ratio 0.05
+
+        Tuner will create:
+
+        finetuning_chats/
+                 raw/         ← your chat JSON/TXT
+                 cleaned/     ← text_cleaner.py outputs
+                 optimized/   ← content_optimizer.py outputs
+                 refined/     ← command_extractor.py outputs
+                 final/       ← dataset_creator.py outputs (openai/, anthropic/, …)
+                 pipeline_metrics.json
+  3. Tweak segmentation for chat style
+           By default we chunk on blank‑line/paragraph boundaries, then sentences, but for short chat messages you may want smaller
+            windows. You can pass:
+
+        python content_optimizer.py \
+                 --input finetuning_chats/cleaned \
+                 --output finetuning_chats/optimized \
+                 --min-segment 100 --max-segment 800 --overlap 20 \
+                 --instruction "Summarize this chat segment:"
+
+  4. Pull in only the bits you need
+           If your logs are huge and you just want the most relevant snippets (e.g. “What decisions did we make about logging?”), you
+    can embed each cleaned segment into a vector store and at run‑time retrieve top‑K before passing to the LLM. See the earlier “vector
+     DB” recipe.
+
+  5. Consume the final dataset
+           Your `finetuning_chats/final/openai/train.jsonl` and `…/validation.jsonl` are now ready for `openai api fine_tunes.create …`
+    (or any of the other formats).
+
+  — That’s all there is to it. Drop your raw chat files into a folder, point Tuner at it, adjust segment lengths and instructions to suit, and you’ll get a cleaned, AI‑refined, ready‑to‑train dataset in minutes. user it's txt but the format is essentially what our chats look like - kind of mixed with code snippets and back and forth between us.
+
+## Codex
+
+  Since your logs are plain‑text transcripts with interleaved code blocks, you can treat them just like any other “raw” source in
+    Tuner. Here’s a step‑by‑step:
+
+  1. Drop your `.txt` files into a folder, e.g. `chat_logs_raw/`.
+           Tuner’s extractor will pull in any `.txt` as-is (it doesn’t need JSON).
+  2. Run the full pipeline:
+
+      python fine_tuning_pipeline.py \
+                 --dir chat_logs_raw \
+                 --base-dir finetuning_chatlogs \
+                 --instruction "Summarize this conversation segment:" \
+                 --model gpt-3.5-turbo \
+                 --val-ratio 0.05
+
+        You’ll end up with:
+
+        finetuning_chatlogs/
+                 raw/       ← your .txt chat logs
+                 cleaned/   ← cleaned transcripts (code fences preserved as text)
+                 optimized/ ← segmented “chunks” (each chunk may contain a few messages + code)
+                 refined/   ← AI‑extracted prompts/completions
+                 final/     ← ready‑to‑train datasets (openai/, anthropic/, etc.)
+
+  3. Tweak segmentation if you need smaller chunks around code:
+
+        python content_optimizer.py \
+                 --input finetuning_chatlogs/cleaned \
+                 --output finetuning_chatlogs/optimized \
+                 --min-segment 100 \
+                 --max-segment 600 \
+                 --overlap 20 \
+                 --instruction "Summarize this chat snippet:"
+
+        That ensures code snippets stay together and aren’t split mid‑block.
+
+  4. Preserve code blocks in cleaning
+           By default `text_cleaner.py` will strip non‑UTF8 junk but keeps back‑ticks. If you find code fences getting mangled, open
+
+      `text_cleaner.py` and tweak the regex that removes Markdown-like formatting to ignore triple‑backtick fences.
+
+  5. Extract/refine and build your dataset
+           Once you have `optimized/`, run the command extractor and dataset creator exactly as shown in the README’s “Individual
+    Component Usage” section:
+
+  python command_extractor.py \
+                 --input finetuning_chatlogs/optimized \
+                 --output finetuning_chatlogs/refined \
+                 --instruction "Summarize this chat snippet:" \
+                 --model gpt-3.5-turbo
+
+  python dataset_creator.py \
+                 --input finetuning_chatlogs/refined \
+                 --output finetuning_chatlogs/final \
+                 --val-ratio 0.05 \
+                 --instruction "Summarize this conversation segment:"
+
+After that you’ll have final/openai/train.jsonl (and the other formats) ready for fine‑tuning.
