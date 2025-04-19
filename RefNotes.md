@@ -293,3 +293,65 @@ You can absolutely point Tuner at a folder full of raw chat‐transcript files a
                  --instruction "Summarize this conversation segment:"
 
 After that you’ll have final/openai/train.jsonl (and the other formats) ready for fine‑tuning.
+
+1. Migrate to the new OpenAI Python API
+
+        * Replaced      openai.ChatCompletion.create(…)
+
+          with      openai.chat.completions.create(…, temperature=0)
+        * Sets `temperature=0` for deterministic JSON output.
+
+    2. Robust JSON‑only parsing
+
+        * Strips markdown fences (` ``` ` / ```json`)
+        * Finds the first “{” / last “}” to isolate the JSON blob
+        * On parse errors, prints the raw (unfenced) text to stderr.
+
+    3. Per‑file progress and summary prints
+
+        * Prints “Found N JSON files in …”
+        * Prints “Analyzing file i/N: <path>” for each chunk
+        * At the end, prints how many actions / queries / explanations / decisions were collected.
+
+    4. “Append” mode (via --append)
+
+        * If the output file already exists, loads it, shows its counts, and adds new entries rather than
+    overwriting.
+        * Default behavior (no `--append`) still starts fresh.
+
+    5. Timestamped directory output
+
+        * If you pass a directory to `--output`, e.g. `--output chat-summaries/`, it will:
+          • Create that directory if needed
+          • Write a new file like `chat_summary_20250420_143212.json` inside it
+          • Print its exact path for you
+        * If you pass a file path instead, it behaves exactly as before.
+
+    — — —
+
+    Usage examples:
+
+    A) Basic single run (overwrite or fresh file):
+
+        python tools/chat_analyzer.py \
+          --input finetuning_chatlogs/optimized \
+          --output chat_summary.json \
+          --model gpt-4o
+
+    B) Append to an existing summary:
+
+        python tools/chat_analyzer.py \
+          --input new_chunks/optimized \
+          --output chat_summary.json \
+          --model gpt-4o \
+          --append
+
+    C) Keep every run in its own timestamped file:
+
+        python tools/chat_analyzer.py \
+          --input finetuning_chatlogs/optimized \
+          --output chat-summaries/ \
+          --model gpt-4o
+
+    This drops files like chat-summaries/chat_summary_20250420_143212.json.
+    

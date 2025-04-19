@@ -35,8 +35,43 @@ The system takes your existing content from various sources (URLs, files, direct
 
 ### Prerequisites
 
-- Python 3.8 or higher
-- pip (Python package installer)
+        - Python 3.8 or higher
+        - pip (Python package installer)
+
+### API Key Configuration
+
+The OpenAI API key must be available in the `OPENAI_API_KEY` environment variable. You have several options:
+
+1. Add it to your shell startup (e.g., in `~/.bashrc` or `~/.zshrc`):
+   ```bash
+   export OPENAI_API_KEY="sk-...your_key_here..."
+   ```
+
+2. Use a `.env` file and `python-dotenv`:
+   - Create a file named `.env` in this project root:
+     ```text
+     OPENAI_API_KEY=sk-...your_key_here...
+     ```
+   - Install python-dotenv:
+     ```bash
+     pip install python-dotenv
+     ```
+   - At the top of any Python script that uses OpenAI, add:
+     ```python
+     from dotenv import load_dotenv
+     load_dotenv()
+     ```
+
+3. Use direnv for per-directory environments (recommended for scoped keys):
+   - Ensure direnv is installed (https://direnv.net/).
+   - We provide a sample `.envrc` file in the project root; edit it to include your key.
+   - In the project root, run:
+     ```bash
+     direnv allow
+     ```
+   Now, whenever you `cd` into this directory, `OPENAI_API_KEY` will be set automatically.
+
+### Setup
 
 ### Setup
 
@@ -158,6 +193,29 @@ python command_extractor.py --input optimized --output refined \
 python dataset_creator.py --input refined --output final \
   --val-ratio 0.1 --instruction "Continue writing in the style of the author:"
 ```
+
+### 6. Chat Analysis (Optional)
+
+After generating optimized segments (e.g., from chat logs), you can classify them into actions, queries, explanations, and decisions:
+
+```bash
+python tools/chat_analyzer.py \
+  --input path/to/optimized \
+  --output chat_summary.json \
+  --model gpt-4o
+```
+
+Inspect `chat_summary.json` for a structure like:
+```json
+{
+  "actions": [...],
+  "queries": [...],
+  "explanations": [...],
+  "decisions": [...]
+}
+```
+
+To customize categories or prompt phrasing, edit the `ANALYSIS_PROMPT` in `tools/chat_analyzer.py`.
 
 ## Fine-Tuning with the Generated Datasets
 

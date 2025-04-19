@@ -1,0 +1,12 @@
+[
+  {
+    "instruction": "Summarize this chat segment",
+    "input": "Summarize this chat segment:",
+    "output": "- Use Codex CLI commands in shell scripts for routine tasks and schedule them via cron jobs or task runners, collaborate with Codex for code explanations, edits, and fixes, and keep one terminal for coding and testing while using another for Codex prompts and approvals."
+  },
+  {
+    "instruction": "Summarize this chat segment",
+    "input": "Summarize this chat segment:",
+    "output": "- `npm install -g openai codex`: Install the Codex CLI globally using npm.\n- `codex export OPENAI_API_KEY \"...\" codex -a auto-edit --quiet \"update CHANGELOG for next release\"`: Update changelog via Codex with the specified API key and auto-edit mode.\n- `docker run --rm -it node:20 bash npm install -g openai codex export OPENAI_API_KEY \"...\"`: Spin up a lightweight Docker container with Node.js and Codex installed.\n- `ssh`: SSH into a Linux VM or server to run Codex.\n- `--approval-mode auto-edit --quiet`: Run Codex headlessly in CI pipelines with auto-edit mode and quiet output.\n- `Embed Codex CLI commands in shell scripts for routine tasks and schedule via cron or task runners.`: Use Codex CLI in automated scripts for tasks like updating docs or lint fixes."
+  }
+]

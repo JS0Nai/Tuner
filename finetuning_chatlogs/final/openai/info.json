@@ -1,0 +1,7 @@
+{
+  "format": "OpenAI fine-tuning",
+  "train_examples": 24,
+  "validation_examples": 2,
+  "created": "2025-04-20T01:49:25.025341",
+  "notes": "For use with OpenAI's fine-tuning API"
+}

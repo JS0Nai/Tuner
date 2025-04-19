@@ -1,0 +1,379 @@
+{
+  "original_source": "codex-help.txt",
+  "title": "CodeX",
+  "segments_count": 3,
+  "style_markers": {
+    "avg_sentence_length": 26.925925925925927,
+    "avg_paragraph_length": 3674.0,
+    "transition_phrases": [],
+    "common_phrases": [
+      [
+        "--approval mode",
+        5
+      ],
+      [
+        "openai codex",
+        4
+      ],
+      [
+        "export openai_api_key",
+        4
+      ],
+      [
+        "o4 mini",
+        4
+      ],
+      [
+        "in your",
+        4
+      ],
+      [
+        "auto edit",
+        4
+      ],
+      [
+        "npm install",
+        3
+      ],
+      [
+        "install -g",
+        3
+      ],
+      [
+        "-g openai",
+        3
+      ],
+      [
+        "your api",
+        3
+      ]
+    ],
+    "stylistic_elements": [
+      {
+        "element": "em_dashes",
+        "count": 13,
+        "per_1000_chars": 3.538377789874796
+      },
+      {
+        "element": "semicolons",
+        "count": 2,
+        "per_1000_chars": 0.5443658138268916
+      },
+      {
+        "element": "parentheticals",
+        "count": 10,
+        "per_1000_chars": 2.721829069134458
+      },
+      {
+        "element": "quotes",
+        "count": 13,
+        "per_1000_chars": 3.538377789874796
+      },
+      {
+        "element": "italics_underscores",
+        "count": 7,
+        "per_1000_chars": 1.905280348394121
+      }
+    ]
+  },
+  "training_examples": [
+    {
+      "id": "example_1",
+      "segment": "1. Global install (once) npm install -g openai codex yarn global add openai codex 2. Persisting your API key echo 'export OPENAI_API_KEY \"your-api-key-here\"' .zshrc echo 'export OPENAI_API_KEY \"your-api-key-here\"' .bash_profile 3. Reload your shell source .zshrc or source .bash_profile 4. Verify codex is available Now echo OPENAI_API_KEY should show your key. In ANY terminal: codex \"explain this codebase to me\" codex --approval-mode full-auto \"create the fanciest todo-list app\" Percommand flag Just add the --model (or -m) option when you invoke Codex: codex --model o4-mini-high \"your prompt here\" codex -m o4-mini-high \"refactor src auth.js\" Default in your config file If youd like o4minihigh every time, add it to .codex config.yaml: model: o4-mini-high Key Flags Modes Model selection (--model or -m): defaults to o4-mini, but you can use any supported model (e.g., gpt-4o). Approval mode (--approval-mode or -a): suggest (default): shows proposed changes for your OK auto-edit: applies patches automatically, but still asks before shell commands full-auto: no prompts; everything runs sandboxed without network access Quiet JSON output (--quiet or -q): suppresses the interactive UI or outputs machinereadable JSON for CI pipelines. Run Codex headlessly in your GitHub Actions or other CI: - name: Update changelog via Codex npm install -g openai codex export OPENAI_API_KEY \" {{ secrets.OPENAI_KEY }}\" codex -a auto-edit --quiet \"update CHANGELOG for next release\" Set CODEX_QUIET_MODE 1 if you need further silencing of UI noise Advanced Configuration Memory Project docs memory: Codex merges instructions from .codex instructions.md (your global guidance), plus codex.md in your repo root or current directory. Disable with --no-project-doc.",
+      "metadata": {
+        "source": "codex-help.txt",
+        "title": "CodeX",
+        "date": "2025-04-20T01:38:33.132493",
+        "style_markers": {
+          "avg_sentence_length": 26.925925925925927,
+          "avg_paragraph_length": 3674.0,
+          "transition_phrases": [],
+          "common_phrases": [
+            [
+              "--approval mode",
+              5
+            ],
+            [
+              "openai codex",
+              4
+            ],
+            [
+              "export openai_api_key",
+              4
+            ],
+            [
+              "o4 mini",
+              4
+            ],
+            [
+              "in your",
+              4
+            ],
+            [
+              "auto edit",
+              4
+            ],
+            [
+              "npm install",
+              3
+            ],
+            [
+              "install -g",
+              3
+            ],
+            [
+              "-g openai",
+              3
+            ],
+            [
+              "your api",
+              3
+            ]
+          ],
+          "stylistic_elements": [
+            {
+              "element": "em_dashes",
+              "count": 13,
+              "per_1000_chars": 3.538377789874796
+            },
+            {
+              "element": "semicolons",
+              "count": 2,
+              "per_1000_chars": 0.5443658138268916
+            },
+            {
+              "element": "parentheticals",
+              "count": 10,
+              "per_1000_chars": 2.721829069134458
+            },
+            {
+              "element": "quotes",
+              "count": 13,
+              "per_1000_chars": 3.538377789874796
+            },
+            {
+              "element": "italics_underscores",
+              "count": 7,
+              "per_1000_chars": 1.905280348394121
+            }
+          ]
+        }
+      },
+      "prompt": "Summarize this chat segment:",
+      "completion": "1. Global install (once) npm install -g openai codex yarn global add openai codex 2. Persisting your API key echo 'export OPENAI_API_KEY \"your-api-key-here\"' .zshrc echo 'export OPENAI_API_KEY \"your-api-key-here\"' .bash_profile 3. Reload your shell source .zshrc or source .bash_profile 4. Verify codex is available Now echo OPENAI_API_KEY should show your key. In ANY terminal: codex \"explain this codebase to me\" codex --approval-mode full-auto \"create the fanciest todo-list app\" Percommand flag Just add the --model (or -m) option when you invoke Codex: codex --model o4-mini-high \"your prompt here\" codex -m o4-mini-high \"refactor src auth.js\" Default in your config file If youd like o4minihigh every time, add it to .codex config.yaml: model: o4-mini-high Key Flags Modes Model selection (--model or -m): defaults to o4-mini, but you can use any supported model (e.g., gpt-4o). Approval mode (--approval-mode or -a): suggest (default): shows proposed changes for your OK auto-edit: applies patches automatically, but still asks before shell commands full-auto: no prompts; everything runs sandboxed without network access Quiet JSON output (--quiet or -q): suppresses the interactive UI or outputs machinereadable JSON for CI pipelines. Run Codex headlessly in your GitHub Actions or other CI: - name: Update changelog via Codex npm install -g openai codex export OPENAI_API_KEY \" {{ secrets.OPENAI_KEY }}\" codex -a auto-edit --quiet \"update CHANGELOG for next release\" Set CODEX_QUIET_MODE 1 if you need further silencing of UI noise Advanced Configuration Memory Project docs memory: Codex merges instructions from .codex instructions.md (your global guidance), plus codex.md in your repo root or current directory. Disable with --no-project-doc.",
+      "chat_format": [
+        {
+          "role": "system",
+          "content": "You are an assistant that summarize this chat segment"
+        },
+        {
+          "role": "user",
+          "content": "Summarize this chat segment:"
+        },
+        {
+          "role": "assistant",
+          "content": "1. Global install (once) npm install -g openai codex yarn global add openai codex 2. Persisting your API key echo 'export OPENAI_API_KEY \"your-api-key-here\"' .zshrc echo 'export OPENAI_API_KEY \"your-api-key-here\"' .bash_profile 3. Reload your shell source .zshrc or source .bash_profile 4. Verify codex is available Now echo OPENAI_API_KEY should show your key. In ANY terminal: codex \"explain this codebase to me\" codex --approval-mode full-auto \"create the fanciest todo-list app\" Percommand flag Just add the --model (or -m) option when you invoke Codex: codex --model o4-mini-high \"your prompt here\" codex -m o4-mini-high \"refactor src auth.js\" Default in your config file If youd like o4minihigh every time, add it to .codex config.yaml: model: o4-mini-high Key Flags Modes Model selection (--model or -m): defaults to o4-mini, but you can use any supported model (e.g., gpt-4o). Approval mode (--approval-mode or -a): suggest (default): shows proposed changes for your OK auto-edit: applies patches automatically, but still asks before shell commands full-auto: no prompts; everything runs sandboxed without network access Quiet JSON output (--quiet or -q): suppresses the interactive UI or outputs machinereadable JSON for CI pipelines. Run Codex headlessly in your GitHub Actions or other CI: - name: Update changelog via Codex npm install -g openai codex export OPENAI_API_KEY \" {{ secrets.OPENAI_KEY }}\" codex -a auto-edit --quiet \"update CHANGELOG for next release\" Set CODEX_QUIET_MODE 1 if you need further silencing of UI noise Advanced Configuration Memory Project docs memory: Codex merges instructions from .codex instructions.md (your global guidance), plus codex.md in your repo root or current directory. Disable with --no-project-doc."
+        }
+      ]
+    },
+    {
+      "id": "example_2",
+      "segment": "Run Codex headlessly in your GitHub Actions or other CI: - name: Update changelog via Codex npm install -g openai codex export OPENAI_API_KEY \" {{ secrets.OPENAI_KEY }}\" codex -a auto-edit --quiet \"update CHANGELOG for next release\" Set CODEX_QUIET_MODE 1 if you need further silencing of UI noise Advanced Configuration Memory Project docs memory: Codex merges instructions from .codex instructions.md (your global guidance), plus codex.md in your repo root or current directory. Disable with --no-project-doc. Config file at .codex config.yaml, for defaults like: fullAutoErrorMode: ask-user Docker Container Spin up a lightweight container: docker run --rm -it node:20 bash npm install -g openai codex export OPENAI_API_KEY \"...\" Keeps your host system clean and reproducible. 3. Integrated Development Environments VS Code: open the integrated terminal and invoke codex. JetBrains IDEs: use the builtin terminal. Any editor with a terminal pane (e.g., Sublime Text, Emacs, Vim tmux splits). 4. CloudHosted Terminals GitHub Codespaces or Gitpod: preconfigured dev environmentsjust add Codex to your dotfiles or install at project startup. Cloud Shells: Google Cloud Shell, AWS CloudShell, or Azure Cloud Shell all support npm and can run Codex CLI directly. 5. Remote Servers SSH SSH into a Linux VM or baremetal server, install Node.js Codex, and run just as you would locally. Useful for heavier compute or shared team environments. 6. Continuous Integration CI Pipelines GitHub Actions, GitLab CI, CircleCI, Jenkins, etc. Run headlessly with flags like --approval-mode auto-edit --quiet to apply edits or generate artifacts in your build workflow. 7. Automated Scripts Cron Jobs Embed Codex CLI commands in shell scripts for routine tasks (e.g., updating docs, lint fixes) and schedule via cron or task runners.",
+      "metadata": {
+        "source": "codex-help.txt",
+        "title": "CodeX",
+        "date": "2025-04-20T01:38:33.132493",
+        "style_markers": {
+          "avg_sentence_length": 26.925925925925927,
+          "avg_paragraph_length": 3674.0,
+          "transition_phrases": [],
+          "common_phrases": [
+            [
+              "--approval mode",
+              5
+            ],
+            [
+              "openai codex",
+              4
+            ],
+            [
+              "export openai_api_key",
+              4
+            ],
+            [
+              "o4 mini",
+              4
+            ],
+            [
+              "in your",
+              4
+            ],
+            [
+              "auto edit",
+              4
+            ],
+            [
+              "npm install",
+              3
+            ],
+            [
+              "install -g",
+              3
+            ],
+            [
+              "-g openai",
+              3
+            ],
+            [
+              "your api",
+              3
+            ]
+          ],
+          "stylistic_elements": [
+            {
+              "element": "em_dashes",
+              "count": 13,
+              "per_1000_chars": 3.538377789874796
+            },
+            {
+              "element": "semicolons",
+              "count": 2,
+              "per_1000_chars": 0.5443658138268916
+            },
+            {
+              "element": "parentheticals",
+              "count": 10,
+              "per_1000_chars": 2.721829069134458
+            },
+            {
+              "element": "quotes",
+              "count": 13,
+              "per_1000_chars": 3.538377789874796
+            },
+            {
+              "element": "italics_underscores",
+              "count": 7,
+              "per_1000_chars": 1.905280348394121
+            }
+          ]
+        }
+      },
+      "prompt": "Summarize this chat segment:",
+      "completion": "Run Codex headlessly in your GitHub Actions or other CI: - name: Update changelog via Codex npm install -g openai codex export OPENAI_API_KEY \" {{ secrets.OPENAI_KEY }}\" codex -a auto-edit --quiet \"update CHANGELOG for next release\" Set CODEX_QUIET_MODE 1 if you need further silencing of UI noise Advanced Configuration Memory Project docs memory: Codex merges instructions from .codex instructions.md (your global guidance), plus codex.md in your repo root or current directory. Disable with --no-project-doc. Config file at .codex config.yaml, for defaults like: fullAutoErrorMode: ask-user Docker Container Spin up a lightweight container: docker run --rm -it node:20 bash npm install -g openai codex export OPENAI_API_KEY \"...\" Keeps your host system clean and reproducible. 3. Integrated Development Environments VS Code: open the integrated terminal and invoke codex. JetBrains IDEs: use the builtin terminal. Any editor with a terminal pane (e.g., Sublime Text, Emacs, Vim tmux splits). 4. CloudHosted Terminals GitHub Codespaces or Gitpod: preconfigured dev environmentsjust add Codex to your dotfiles or install at project startup. Cloud Shells: Google Cloud Shell, AWS CloudShell, or Azure Cloud Shell all support npm and can run Codex CLI directly. 5. Remote Servers SSH SSH into a Linux VM or baremetal server, install Node.js Codex, and run just as you would locally. Useful for heavier compute or shared team environments. 6. Continuous Integration CI Pipelines GitHub Actions, GitLab CI, CircleCI, Jenkins, etc. Run headlessly with flags like --approval-mode auto-edit --quiet to apply edits or generate artifacts in your build workflow. 7. Automated Scripts Cron Jobs Embed Codex CLI commands in shell scripts for routine tasks (e.g., updating docs, lint fixes) and schedule via cron or task runners.",
+      "chat_format": [
+        {
+          "role": "system",
+          "content": "You are an assistant that summarize this chat segment"
+        },
+        {
+          "role": "user",
+          "content": "Summarize this chat segment:"
+        },
+        {
+          "role": "assistant",
+          "content": "Run Codex headlessly in your GitHub Actions or other CI: - name: Update changelog via Codex npm install -g openai codex export OPENAI_API_KEY \" {{ secrets.OPENAI_KEY }}\" codex -a auto-edit --quiet \"update CHANGELOG for next release\" Set CODEX_QUIET_MODE 1 if you need further silencing of UI noise Advanced Configuration Memory Project docs memory: Codex merges instructions from .codex instructions.md (your global guidance), plus codex.md in your repo root or current directory. Disable with --no-project-doc. Config file at .codex config.yaml, for defaults like: fullAutoErrorMode: ask-user Docker Container Spin up a lightweight container: docker run --rm -it node:20 bash npm install -g openai codex export OPENAI_API_KEY \"...\" Keeps your host system clean and reproducible. 3. Integrated Development Environments VS Code: open the integrated terminal and invoke codex. JetBrains IDEs: use the builtin terminal. Any editor with a terminal pane (e.g., Sublime Text, Emacs, Vim tmux splits). 4. CloudHosted Terminals GitHub Codespaces or Gitpod: preconfigured dev environmentsjust add Codex to your dotfiles or install at project startup. Cloud Shells: Google Cloud Shell, AWS CloudShell, or Azure Cloud Shell all support npm and can run Codex CLI directly. 5. Remote Servers SSH SSH into a Linux VM or baremetal server, install Node.js Codex, and run just as you would locally. Useful for heavier compute or shared team environments. 6. Continuous Integration CI Pipelines GitHub Actions, GitLab CI, CircleCI, Jenkins, etc. Run headlessly with flags like --approval-mode auto-edit --quiet to apply edits or generate artifacts in your build workflow. 7. Automated Scripts Cron Jobs Embed Codex CLI commands in shell scripts for routine tasks (e.g., updating docs, lint fixes) and schedule via cron or task runners."
+        }
+      ]
+    },
+    {
+      "id": "example_3",
+      "segment": "7. Automated Scripts Cron Jobs Embed Codex CLI commands in shell scripts for routine tasks (e.g., updating docs, lint fixes) and schedule via cron or task runners. Collaborate with Your Code Ask for explanations: codex \"Explain the purpose of src utils.js\" Generate edits: codex --approval-mode suggest \"Refactor the authentication logic into a separate module\" Apply fixes automatically: codex --approval-mode auto-edit \"Fix lint errors in src \" Keep one terminal for coding, testing, and git commands; use the other exclusively for Codex prompts. If Codex suggests edits, youll see a diff in the REPLapprove or reject each change. You can also run oneoff prompts without entering the REPL: codex \"Add JSDoc comments to all functions in lib \" GitHub Discussions Issues: [URL]",
+      "metadata": {
+        "source": "codex-help.txt",
+        "title": "CodeX",
+        "date": "2025-04-20T01:38:33.132493",
+        "style_markers": {
+          "avg_sentence_length": 26.925925925925927,
+          "avg_paragraph_length": 3674.0,
+          "transition_phrases": [],
+          "common_phrases": [
+            [
+              "--approval mode",
+              5
+            ],
+            [
+              "openai codex",
+              4
+            ],
+            [
+              "export openai_api_key",
+              4
+            ],
+            [
+              "o4 mini",
+              4
+            ],
+            [
+              "in your",
+              4
+            ],
+            [
+              "auto edit",
+              4
+            ],
+            [
+              "npm install",
+              3
+            ],
+            [
+              "install -g",
+              3
+            ],
+            [
+              "-g openai",
+              3
+            ],
+            [
+              "your api",
+              3
+            ]
+          ],
+          "stylistic_elements": [
+            {
+              "element": "em_dashes",
+              "count": 13,
+              "per_1000_chars": 3.538377789874796
+            },
+            {
+              "element": "semicolons",
+              "count": 2,
+              "per_1000_chars": 0.5443658138268916
+            },
+            {
+              "element": "parentheticals",
+              "count": 10,
+              "per_1000_chars": 2.721829069134458
+            },
+            {
+              "element": "quotes",
+              "count": 13,
+              "per_1000_chars": 3.538377789874796
+            },
+            {
+              "element": "italics_underscores",
+              "count": 7,
+              "per_1000_chars": 1.905280348394121
+            }
+          ]
+        }
+      },
+      "prompt": "Summarize this chat segment:",
+      "completion": "7. Automated Scripts Cron Jobs Embed Codex CLI commands in shell scripts for routine tasks (e.g., updating docs, lint fixes) and schedule via cron or task runners. Collaborate with Your Code Ask for explanations: codex \"Explain the purpose of src utils.js\" Generate edits: codex --approval-mode suggest \"Refactor the authentication logic into a separate module\" Apply fixes automatically: codex --approval-mode auto-edit \"Fix lint errors in src \" Keep one terminal for coding, testing, and git commands; use the other exclusively for Codex prompts. If Codex suggests edits, youll see a diff in the REPLapprove or reject each change. You can also run oneoff prompts without entering the REPL: codex \"Add JSDoc comments to all functions in lib \" GitHub Discussions Issues: [URL]",
+      "chat_format": [
+        {
+          "role": "system",
+          "content": "You are an assistant that summarize this chat segment"
+        },
+        {
+          "role": "user",
+          "content": "Summarize this chat segment:"
+        },
+        {
+          "role": "assistant",
+          "content": "7. Automated Scripts Cron Jobs Embed Codex CLI commands in shell scripts for routine tasks (e.g., updating docs, lint fixes) and schedule via cron or task runners. Collaborate with Your Code Ask for explanations: codex \"Explain the purpose of src utils.js\" Generate edits: codex --approval-mode suggest \"Refactor the authentication logic into a separate module\" Apply fixes automatically: codex --approval-mode auto-edit \"Fix lint errors in src \" Keep one terminal for coding, testing, and git commands; use the other exclusively for Codex prompts. If Codex suggests edits, youll see a diff in the REPLapprove or reject each change. You can also run oneoff prompts without entering the REPL: codex \"Add JSDoc comments to all functions in lib \" GitHub Discussions Issues: [URL]"
+        }
+      ]
+    }
+  ],
+  "optimization_timestamp": "2025-04-20T01:48:43.741586"
+}

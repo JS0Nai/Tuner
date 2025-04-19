@@ -35,6 +35,7 @@ Thumbs.db
 build-log.txt
 templates/
 REFNOTES.md
+
 # Local artifacts
 codex-chat.txt
 codex-help.txt
@@ -44,3 +45,6 @@ command_extractor.py
 
 # Tuning directory
 tunerr/
+
+# Key files
+.envrc

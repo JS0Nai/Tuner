@@ -1,0 +1,33 @@
+{
+  "start_time": "2025-04-20T01:48:36.534649",
+  "stages": {
+    "extraction": {
+      "files_generated": 4,
+      "duration_seconds": 1.2355008125305176
+    },
+    "cleaning": {
+      "files_generated": 4,
+      "duration_seconds": 1.8507251739501953
+    },
+    "optimization": {
+      "files_generated": 4,
+      "duration_seconds": 2.127368927001953
+    },
+    "refinement": {
+      "files_generated": 4,
+      "duration_seconds": 40.8252329826355
+    },
+    "dataset_creation": {
+      "formats_generated": 5,
+      "duration_seconds": 0.05767202377319336
+    }
+  },
+  "total_duration_seconds": 48.502675,
+  "dataset_summary": {
+    "total_examples": 4,
+    "total_segments": 26,
+    "train_examples": 24,
+    "validation_examples": 2
+  },
+  "end_time": "2025-04-20T01:49:25.037324"
+}

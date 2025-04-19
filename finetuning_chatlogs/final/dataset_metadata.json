@@ -1,0 +1,153 @@
+{
+  "dataset_creation_time": "2025-04-20T01:49:25.021757",
+  "total_examples": 4,
+  "total_segments": 26,
+  "total_tokens_estimate": 11467,
+  "source_files": [
+    {
+      "filename": "task_20250420013833.json",
+      "title": "TASK:",
+      "original_source": "build-log.txt",
+      "examples_count": 10
+    },
+    {
+      "filename": "codex_20250420013833.json",
+      "title": "CodeX",
+      "original_source": "codex-help.txt",
+      "examples_count": 3
+    },
+    {
+      "filename": "codex_20250420014839.json",
+      "title": "CodeX",
+      "original_source": "codex-help.txt",
+      "examples_count": 3
+    },
+    {
+      "filename": "task_20250420014839.json",
+      "title": "TASK:",
+      "original_source": "build-log.txt",
+      "examples_count": 10
+    }
+  ],
+  "split": {
+    "train": 24,
+    "validation": 2
+  },
+  "style_markers_summary": {
+    "avg_sentence_length": 27.071937321937323,
+    "avg_paragraph_length": 8117.5,
+    "transition_phrases": [
+      [
+        "first",
+        2
+      ],
+      [
+        "finally",
+        2
+      ],
+      [
+        "specifically",
+        2
+      ]
+    ],
+    "common_phrases": [
+      [
+        "fine tuning",
+        66
+      ],
+      [
+        "web interface",
+        36
+      ],
+      [
+        "llm fine",
+        30
+      ],
+      [
+        "llm fine tuning",
+        30
+      ],
+      [
+        "create a",
+        22
+      ],
+      [
+        "for llm",
+        22
+      ],
+      [
+        "for llm fine",
+        22
+      ],
+      [
+        "the web",
+        20
+      ],
+      [
+        "the web interface",
+        20
+      ],
+      [
+        "let 's",
+        16
+      ],
+      [
+        "--approval mode",
+        10
+      ],
+      [
+        "openai codex",
+        8
+      ],
+      [
+        "export openai_api_key",
+        8
+      ],
+      [
+        "o4 mini",
+        8
+      ],
+      [
+        "in your",
+        8
+      ]
+    ],
+    "stylistic_elements": [
+      {
+        "element": "italics_underscores",
+        "avg_per_1000_chars": 2.5846758401472236,
+        "total_count": 96
+      },
+      {
+        "element": "parentheticals",
+        "avg_per_1000_chars": 2.3560582333173286,
+        "total_count": 70
+      },
+      {
+        "element": "quotes",
+        "avg_per_1000_chars": 2.2468578703374456,
+        "total_count": 50
+      },
+      {
+        "element": "em_dashes",
+        "avg_per_1000_chars": 1.848800390837406,
+        "total_count": 30
+      },
+      {
+        "element": "exclamations",
+        "avg_per_1000_chars": 0.6368919672000637,
+        "total_count": 16
+      },
+      {
+        "element": "semicolons",
+        "avg_per_1000_chars": 0.5443658138268916,
+        "total_count": 4
+      },
+      {
+        "element": "questions",
+        "avg_per_1000_chars": 0.07961149590000796,
+        "total_count": 2
+      }
+    ]
+  }
+}
