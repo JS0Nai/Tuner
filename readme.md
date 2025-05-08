@@ -1,5 +1,7 @@
 # Content Preparation System for LLM Fine-Tuning
 
+![Banner](media/banner.png)
+
 This system provides a comprehensive pipeline for preparing, cleaning, and optimizing content for fine-tuning language models on your writing style and tone.
 
 ## Overview
@@ -345,7 +347,7 @@ Contributions to improve this system are welcome. Please feel free to submit iss
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 <img width="961" alt="image" src="https://github.com/user-attachments/assets/8179c88a-1b56-43e4-b8b9-afdfb1678b39" />
 
